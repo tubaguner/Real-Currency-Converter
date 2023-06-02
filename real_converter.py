@@ -8,26 +8,25 @@ def convert_currency():
     url = f"http://www.floatrates.com/daily/usd.json"
     response = requests.get(url)
     data = response.json()
-    amount = float(amount.get())
-    global exchange_rate
-    available_currencies = data.keys()
-    if exchange_rate == available_currencies:
-       exchange_rate = data["rate"][from_currency]
-    to_currency = float(amount * exchange_rate)
+    exchange_rate = data.keys()
+    exchange_rate = data['exchange_rate'][from_currency][to_currency]
+    #global amount
+    amount = amount.get()
+    amount = float(amount * exchange_rate)
     Result.set(f"Result: {to_currency:.2f}")
 
 def input():
-    from_currency = input("Enter the currency to convert from: ").upper()
+    from_currency = input("Enter the currency to convert from: ")
     from_currency.get()
     print("Entered currency: ", from_currency)
 
 def output():
-    to_currency = input("Enter the currency to convert to: ").upper()
+    to_currency = input("Enter the currency to convert to: ")
     to_currency.get()
     print("Entered currency: ",to_currency)
 
 def return_amount(*args):
-    amount_value = float(amount)
+    amount_value = float(amount.get())
     print("Entered amount: ", amount_value)
 
 
