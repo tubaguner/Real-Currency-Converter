@@ -2,18 +2,19 @@ import tkinter as Tk
 from tkinter import ttk
 import requests
 
+from_currency ='' 
+to_currency = ''
+
 
 
 def convert_currency():
-    url = f"http://www.floatrates.com/daily/usd.json"
+    url = f"http://www.floatrates.com/daily/{from_currency}.json"
     response = requests.get(url)
     data = response.json()
-    exchange_rate = data.keys()
-    exchange_rate = data['exchange_rate'][from_currency][to_currency]
-    #global amount
-    amount = amount.get()
-    amount = float(amount * exchange_rate)
-    Result.set(f"Result: {to_currency:.2f}")
+    rates = data.keys()
+    to_currency_rate = data[to_currency.get()]['rate']
+    result_money = float(amount.get()) * to_currency_rate
+    Result.set(f"Result: {result_money:.2f}")
 
 def input():
     from_currency = input("Enter the currency to convert from: ")
@@ -25,11 +26,6 @@ def output():
     to_currency.get()
     print("Entered currency: ",to_currency)
 
-def return_amount(*args):
-    amount_value = float(amount.get())
-    print("Entered amount: ", amount_value)
-
-
 
 root = Tk.Tk()
 root.title('Currency Converter')
@@ -40,24 +36,18 @@ from_currency.pack()
 from_currency.bind('<Return>', input)
 
 
-
 to_currency = ttk.Entry(root,text='To:')
 to_currency.pack()
 to_currency.bind('<Return>', output)
 
-
-
 style = ttk.Style()
 style.configure('Pink.TButton', background='#F0F0F8',foreground='#404040',font=('Arial Bold',16))
-
 
 amount = Tk.StringVar()
 amount_entry = ttk.Entry(root, textvariable=amount)
 amount_entry.pack(fill='x',expand=True)
 amount.get()
 amount_entry.focus()
-amount.trace('w', return_amount)
-    
 
 Result = Tk.StringVar()
 result_entry = ttk.Entry(root,textvariable=Result)
